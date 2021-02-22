@@ -2,3 +2,8 @@
 weechat_deps:
   - weechat
   - libnotify
+
+weematter_deps:
+  - git
+  - python3
+  - py3-pip

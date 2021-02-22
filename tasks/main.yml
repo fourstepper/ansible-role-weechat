@@ -27,7 +27,7 @@
 - name: Template the weechat configuration files
   template:
     src: "{{ item }}"
-    dest: "{{ weechat_home }}/{{ item | basename | regex_replace('.conf','') }}"
+    dest: "{{ weechat_home }}/{{ item | basename }}"
   with_fileglob:
    - files/weechat/*.conf
 
