@@ -1,0 +1,4 @@
+---
+weechat_deps:
+  - weechat
+  - libnotify

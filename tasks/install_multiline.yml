@@ -1,0 +1,16 @@
+---
+- name: Make sure the autoload directory is present
+  file:
+    path: "{{ weechat_home }}/perl/autoload"
+    state: directory
+
+- name: Download the multiline.pl script
+  get_url:
+    url: https://weechat.org/files/scripts/multiline.pl
+    dest: "{{ weechat_home }}/perl/multiline.pl"
+
+- name: Link the multiline.pl script to the autoload directory
+  file:
+    src: "{{ weechat_home }}/perl/multiline.pl"
+    dest: "{{ weechat_home }}/perl/autoload/multiline.pl"
+    state: link

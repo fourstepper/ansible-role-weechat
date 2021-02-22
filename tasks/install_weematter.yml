@@ -1,0 +1,44 @@
+---
+- name: Make sure that all required packages for wee-matter are installed
+  package:
+    name: "{{ weematter_deps }}"
+    state: present
+  become: true
+
+- name: Install websocket_client with pip
+  pip:
+    name: websocket_client
+    state: present
+  become: true
+
+- name: Make sure the source directory is present
+  file:
+    path: "{{ src_dir }}"
+    state: directory
+
+- name: Clone the project with git
+  git:
+    repo: https://git.sr.ht/~reedwade/wee-matter
+    dest: "{{ src_dir }}/wee-matter"
+    force: true
+    update: "{{ upgrade | default(false) }}"
+  register: version
+
+- name: Make sure the autoload directory is present
+  file:
+    path: "{{ weechat_home }}/python/autoload"
+    state: directory
+
+- name: Install wee-matter
+  command:
+    cmd: make install
+    chdir: "{{ src_dir }}/wee-matter"
+    warn: false
+  changed_when: false
+  when: version.changed
+
+- name: Link the wee_matter.py script to the autoload directory
+  file:
+    src: "{{ weechat_home }}/python/wee_matter.py"
+    dest: "{{ weechat_home }}/python/autoload/wee_matter.py"
+    state: link

@@ -1,0 +1,41 @@
+---
+# tasks file for ansible-role-weechat
+- name: Update cache for Debian-based distros
+  apt:
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'Debian'
+  changed_when: false
+  become: true
+
+- name: Include the distribution vars
+  include_vars: "vars/{{ ansible_facts['os_family'] }}.yml"
+
+- name: Make sure that all required packages for weechat are installed
+  package:
+    name: "{{ weechat_deps }}"
+    state: present
+  become: true
+
+- name: Include tasks for installing wee-matter
+  include_tasks: install_weematter.yml
+  when: install_weematter|default(false)
+
+- name: Include tasks for installing multiline.pl
+  include_tasks: install_multiline.yml
+  when: install_multiline|default(false)
+
+- name: Template the weechat configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ weechat_home }}/{{ item | basename | regex_replace('.conf','') }}"
+  with_fileglob:
+   - files/weechat/*.conf
+
+- name: Template the password
+  lineinfile:
+    path: "{{ weechat_home }}/weechat-password"
+    line: "{{ weechat_password }}"
+    create: true
+  when: |
+    weechat_password is defined and
+    weechat_password != ""
