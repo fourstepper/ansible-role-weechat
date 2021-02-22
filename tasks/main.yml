@@ -7,6 +7,15 @@
   changed_when: false
   become: true
 
+- name: Run whoami to get the user name
+  command: whoami
+  changed_when: false
+  register: whoami
+
+- name: Set a fact with the user name.
+  set_fact:
+    ansible_user: "{{ whoami.stdout }}"
+
 - name: Include the distribution vars
   include_vars: "vars/{{ ansible_facts['os_family'] }}.yml"
 
