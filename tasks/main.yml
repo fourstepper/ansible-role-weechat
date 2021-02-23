@@ -33,6 +33,10 @@
   include_tasks: install_multiline.yml
   when: install_multiline|default(false)
 
+- name: Include tasks for installing notify-send
+  include_tasks: install_notifysend.yml
+  when: install_notifysend|default(false)
+
 - name: Template the weechat configuration files
   template:
     src: "{{ item }}"

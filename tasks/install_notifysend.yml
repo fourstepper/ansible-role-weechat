@@ -1,0 +1,30 @@
+---
+- name: Make sure the source directory is present
+  file:
+    path: "{{ src_dir }}"
+    state: directory
+
+- name: Clone the project with git
+  git:
+    repo: https://github.com/s3rvac/weechat-notify-send.git
+    dest: "{{ src_dir }}/weechat-notify-send"
+    force: true
+    update: "{{ upgrade | default(false) }}"
+  register: version
+
+- name: Make sure the autoload directory is present
+  file:
+    path: "{{ weechat_home }}/python/autoload"
+    state: directory
+
+- name: Copy the script
+  copy:
+    src: "{{ src_dir }}/weechat-notify-send/notify_send.py"
+    dest: "{{ weechat_home }}/python"
+    remote_src: true
+
+- name: Link the notify_send.py script to the autoload directory
+  file:
+    src: "{{ weechat_home }}/python/notify_send.py"
+    dest: "{{ weechat_home }}/python/autoload/notify_send.py"
+    state: link

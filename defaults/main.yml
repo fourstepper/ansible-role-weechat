@@ -5,6 +5,7 @@ weechat_home: "$HOME/.weechat"
 
 install_weematter: true
 install_multiline: true
+install_notifysend: true
 
 weechat_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
