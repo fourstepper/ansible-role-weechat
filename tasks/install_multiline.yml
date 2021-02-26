@@ -1,4 +1,10 @@
 ---
+- name: Make sure the dependencies are installed
+  package:
+    name: perl-Pod-Parser
+    state: present
+  when: ansible_facts['os_family'] == "Fedora"
+
 - name: Make sure the autoload directory is present
   file:
     path: "{{ weechat_home }}/perl/autoload"
