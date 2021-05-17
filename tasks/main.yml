@@ -51,5 +51,6 @@
     line: "{{ weechat_password }}"
     create: true
   when: |
+    not ci_test|default(false) and
     (weechat_password is defined and
-    weechat_password != "") and (not ci_test|default(false))
+    weechat_password != "")
