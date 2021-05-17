@@ -43,6 +43,7 @@
     dest: "{{ weechat_home }}/{{ item | basename }}"
   with_fileglob:
     - files/weechat/*.conf
+  when: not ci_test|default(false)
 
 - name: Template the password
   lineinfile:
@@ -50,5 +51,5 @@
     line: "{{ weechat_password }}"
     create: true
   when: |
-    weechat_password is defined and
-    weechat_password != ""
+    (weechat_password is defined and
+    weechat_password != "") and (not ci_test|default(false))
