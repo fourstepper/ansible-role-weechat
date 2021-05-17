@@ -42,7 +42,7 @@
     src: "{{ item }}"
     dest: "{{ weechat_home }}/{{ item | basename }}"
   with_fileglob:
-   - files/weechat/*.conf
+    - files/weechat/*.conf
 
 - name: Template the password
   lineinfile:
