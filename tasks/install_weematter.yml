@@ -36,9 +36,3 @@
     warn: false
   changed_when: false
   when: version.changed
-
-- name: Link the wee_matter.py script to the autoload directory
-  file:
-    src: "{{ weechat_home }}/python/wee_matter.py"
-    dest: "{{ weechat_home }}/python/autoload/wee_matter.py"
-    state: link
